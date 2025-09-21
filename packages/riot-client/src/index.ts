@@ -1,5 +1,5 @@
 
-import { setTimeout as sleep } from "node:timers/promises";
+import { setTimeout as sleep } from "timers/promises";
 import type { Region } from "@lolgg/core-types";
 
 const REGIONAL: Record<"americas"|"asia"|"europe", string> = {
@@ -31,14 +31,13 @@ function matchHostFor(region: Region){
 export class RiotClient {
   constructor(private apiKey: string){}
 
-  private async req(url: string){
+ private async req(url: string): Promise<any> {
     const r = await fetch(url, { headers: { "X-Riot-Token": this.apiKey } });
     if (r.status === 429) {
-      // naive backoff; you can enhance with Retry-After headers
       await sleep(1200);
       return this.req(url);
     }
-    if (!r.ok) throw new Error(`${r.status} ${r.statusText} ${url}`);
+    if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
     return r.json();
   }
 
