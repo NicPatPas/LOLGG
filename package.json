@@ -1,0 +1,20 @@
+
+{
+  "name": "lolgg",
+  "private": true,
+  "packageManager": "pnpm@9",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "db:migrate": "pnpm -w --filter @lolgg/db prisma migrate dev",
+    "db:generate": "pnpm -w --filter @lolgg/db prisma generate"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.6",
+    "typescript": "^5.6.2"
+  }
+}

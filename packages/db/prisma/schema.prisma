@@ -1,0 +1,47 @@
+
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
+
+model Summoner {
+  puuid          String   @id
+  gameName       String
+  tagLine        String
+  profileIcon    Int
+  summonerLevel  Int
+  region         String
+  updatedAt      DateTime @updatedAt
+  Participants   Participant[]
+}
+
+model Match {
+  id             String   @id
+  region         String
+  gameCreation   BigInt
+  gameDuration   Int
+  queueId        Int
+  patch          String
+  Participants   Participant[]
+}
+
+model Participant {
+  id            String  @id
+  matchId       String
+  puuid         String
+  championId    Int
+  teamId        Int
+  role          String?
+  lane          String?
+  win           Boolean
+  kills         Int
+  deaths        Int
+  assists       Int
+  cs            Int
+  gold          Int
+  damageDealt   Int
+  visionScore   Int
+  Match         Match    @relation(fields: [matchId], references: [id])
+  Summoner      Summoner @relation(fields: [puuid], references: [puuid])
+
+  @@index([matchId])
+  @@index([puuid])
+}
